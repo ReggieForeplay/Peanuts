@@ -152,3 +152,110 @@ export function getSnapshotLogs(db: Database.Database): SnapshotLogRow[] {
     .all() as (Omit<SnapshotLogRow, 'total_supply'> & { total_supply: string })[];
   return rows.map((r) => ({ ...r, total_supply: BigInt(r.total_supply) }));
 }
+
+// ─── Streaks ─────────────────────────────────────────────────────────────────
+
+import type { StreakRecord } from '../streak/engine.js';
+
+export function replaceStreaksForWallet(
+  db: Database.Database,
+  wallet: string,
+  records: StreakRecord[],
+): void {
+  db.transaction(() => {
+    db.prepare('DELETE FROM streaks WHERE wallet = ?').run(wallet);
+    const insert = db.prepare(`
+      INSERT INTO streaks
+        (wallet, streak_start, streak_end, break_reason, status, peak_balance, computed_at)
+      VALUES
+        (@wallet, @streak_start, @streak_end, @break_reason, @status, @peak_balance, @computed_at)
+    `);
+    for (const r of records) {
+      insert.run({ ...r, peak_balance: r.peak_balance.toString() });
+    }
+  })();
+}
+
+export function getActiveStreaks(db: Database.Database): Array<StreakRecord & { streak_duration: number }> {
+  const rows = db.prepare(`
+    SELECT *, (computed_at - streak_start) AS streak_duration
+    FROM streaks
+    WHERE status = 'ACTIVE'
+    ORDER BY streak_duration DESC
+  `).all() as Array<StreakRecord & { streak_duration: number; peak_balance: string }>;
+  return rows.map((r) => ({ ...r, peak_balance: BigInt(r.peak_balance) }));
+}
+
+export function getStreaksForWallet(db: Database.Database, wallet: string): StreakRecord[] {
+  const rows = db.prepare(`
+    SELECT * FROM streaks WHERE wallet = ? ORDER BY streak_start DESC
+  `).all(wallet) as Array<StreakRecord & { peak_balance: string }>;
+  return rows.map((r) => ({ ...r, peak_balance: BigInt(r.peak_balance) }));
+}
+
+// ─── Distribution Plans ───────────────────────────────────────────────────────
+
+import type { DistributionPlan, DistributionEntry } from '../calculator/engine.js';
+
+export function insertDistributionPlan(
+  db: Database.Database,
+  plan: DistributionPlan,
+): number {
+  const result = db.transaction(() => {
+    const planRow = db.prepare(`
+      INSERT INTO distribution_plans
+        (created_at, pool_lamports, top_n, curve, config_json,
+         recipient_count, total_payout, dust_lamports, plan_hash, status)
+      VALUES
+        (@created_at, @pool_lamports, @top_n, @curve, @config_json,
+         @recipient_count, @total_payout, @dust_lamports, @plan_hash, 'DRAFT')
+    `).run({
+      created_at: plan.config.computedAt,
+      pool_lamports: plan.config.poolLamports.toString(),
+      top_n: plan.config.topN,
+      curve: plan.config.curve,
+      config_json: JSON.stringify(plan.config, (_, v) =>
+        typeof v === 'bigint' ? v.toString() : v,
+      ),
+      recipient_count: plan.entries.length,
+      total_payout: plan.totalPayout.toString(),
+      dust_lamports: plan.dustLamports.toString(),
+      plan_hash: plan.planHash,
+    });
+
+    const planId = planRow.lastInsertRowid as number;
+    const insertEntry = db.prepare(`
+      INSERT INTO distribution_entries
+        (plan_id, wallet, rank, streak_start, streak_duration, weight, payout_lamports)
+      VALUES
+        (@plan_id, @wallet, @rank, @streak_start, @streak_duration, @weight, @payout_lamports)
+    `);
+    for (const e of plan.entries) {
+      insertEntry.run({
+        plan_id: planId,
+        wallet: e.wallet,
+        rank: e.rank,
+        streak_start: e.streakStart,
+        streak_duration: e.streakDuration,
+        weight: e.weight,
+        payout_lamports: e.payoutLamports.toString(),
+      });
+    }
+    return planId;
+  })();
+  return result as number;
+}
+
+export function getDistributionPlan(
+  db: Database.Database,
+  planId: number,
+): { plan: Record<string, unknown>; entries: DistributionEntry[] } | undefined {
+  const plan = db.prepare('SELECT * FROM distribution_plans WHERE id = ?').get(planId);
+  if (!plan) return undefined;
+  const entries = (
+    db
+      .prepare('SELECT * FROM distribution_entries WHERE plan_id = ? ORDER BY rank ASC')
+      .all(planId) as Array<Record<string, unknown>>
+  ).map((e) => ({ ...e, payoutLamports: BigInt(e.payout_lamports as string) })) as unknown as DistributionEntry[];
+  return { plan: plan as Record<string, unknown>, entries };
+}

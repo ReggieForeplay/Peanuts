@@ -8,6 +8,11 @@
   ],
   "scripts": {
     "ingest": "tsx scripts/run-ingester.ts",
+    "streaks": "tsx scripts/run-streaks.ts",
+    "calculate": "tsx scripts/run-calculator.ts",
+    "simulate": "tsx scripts/run-simulator.ts",
+    "api": "tsx scripts/run-api.ts",
+    "execute": "tsx scripts/executor.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -17,6 +22,7 @@
   "dependencies": {
     "@solana/web3.js": "^1.95.5",
     "better-sqlite3": "^11.7.0",
+    "bs58": "^6.0.0",
     "dotenv": "^17.4.2",
     "express": "^4.21.2",
     "p-limit": "^6.2.0",
