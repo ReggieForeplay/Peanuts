@@ -1,0 +1,26 @@
+{
+  "_comment": "DEX program IDs and Helius tx.source values used to classify transfers as SELL/BUY. Add new programs without code changes.",
+  "sources": {
+    "RAYDIUM": "Raydium AMM and CLMM pools",
+    "JUPITER": "Jupiter aggregator",
+    "ORCA": "Orca Whirlpool",
+    "PUMP_FUN": "Pump.fun bonding curve",
+    "PUMP_AMM": "PumpSwap AMM",
+    "METEORA": "Meteora DLMM",
+    "OPENBOOK": "OpenBook DEX"
+  },
+  "programs": {
+    "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8": { "name": "Raydium AMM v4", "source": "RAYDIUM" },
+    "5quBtoiQqxF9Jv6KYKctB59NT3gtFD2SqzeAgJL26tAo": { "name": "Raydium AMM v3", "source": "RAYDIUM" },
+    "CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK": { "name": "Raydium CLMM", "source": "RAYDIUM" },
+    "CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C": { "name": "Raydium CPMM", "source": "RAYDIUM" },
+    "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4":  { "name": "Jupiter v6", "source": "JUPITER" },
+    "JUP4Fb2cqiRUcaTHdrPC8h2gNsA2ETXiPDD33WcGuJB":  { "name": "Jupiter v4", "source": "JUPITER" },
+    "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc":  { "name": "Orca Whirlpool", "source": "ORCA" },
+    "9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP": { "name": "Orca v2", "source": "ORCA" },
+    "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ35MKDxgznRY3": { "name": "Pump.fun bonding curve", "source": "PUMP_FUN" },
+    "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA":  { "name": "PumpSwap AMM", "source": "PUMP_AMM" },
+    "LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo":  { "name": "Meteora DLMM", "source": "METEORA" },
+    "srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX":  { "name": "OpenBook v1", "source": "OPENBOOK" }
+  }
+}

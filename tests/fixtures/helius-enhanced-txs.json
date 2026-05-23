@@ -1,0 +1,124 @@
+[
+  {
+    "_desc": "Jupiter swap — wallet receives PEANUTS (BUY)",
+    "signature": "sig_buy_jupiter",
+    "slot": 1000,
+    "timestamp": 1700000100,
+    "source": "JUPITER",
+    "tokenTransfers": [
+      {
+        "fromUserAccount": "dex_pool_1",
+        "toUserAccount": "wallet_alice",
+        "mint": "PEANUTS_MINT",
+        "tokenAmount": "5000"
+      }
+    ],
+    "instructions": [
+      { "programId": "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4" }
+    ]
+  },
+  {
+    "_desc": "Jupiter swap — wallet sells PEANUTS (SELL)",
+    "signature": "sig_sell_jupiter",
+    "slot": 2000,
+    "timestamp": 1700001000,
+    "source": "JUPITER",
+    "tokenTransfers": [
+      {
+        "fromUserAccount": "wallet_alice",
+        "toUserAccount": "dex_pool_1",
+        "mint": "PEANUTS_MINT",
+        "tokenAmount": "2000"
+      }
+    ],
+    "instructions": [
+      { "programId": "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4" }
+    ]
+  },
+  {
+    "_desc": "Wallet-to-wallet transfer — wallet RECEIVES (PLAIN_RECEIVE)",
+    "signature": "sig_plain_receive",
+    "slot": 3000,
+    "timestamp": 1700002000,
+    "source": "UNKNOWN",
+    "tokenTransfers": [
+      {
+        "fromUserAccount": "wallet_bob",
+        "toUserAccount": "wallet_alice",
+        "mint": "PEANUTS_MINT",
+        "tokenAmount": "1000"
+      }
+    ],
+    "instructions": [
+      { "programId": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" }
+    ]
+  },
+  {
+    "_desc": "Wallet-to-wallet transfer — wallet SENDS (PLAIN_TRANSFER)",
+    "signature": "sig_plain_transfer",
+    "slot": 4000,
+    "timestamp": 1700003000,
+    "source": "UNKNOWN",
+    "tokenTransfers": [
+      {
+        "fromUserAccount": "wallet_alice",
+        "toUserAccount": "wallet_charlie",
+        "mint": "PEANUTS_MINT",
+        "tokenAmount": "500"
+      }
+    ],
+    "instructions": [
+      { "programId": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" }
+    ]
+  },
+  {
+    "_desc": "Transaction with no PEANUTS token transfers (should produce zero results)",
+    "signature": "sig_no_peanuts",
+    "slot": 5000,
+    "timestamp": 1700004000,
+    "source": "UNKNOWN",
+    "tokenTransfers": [
+      {
+        "fromUserAccount": "wallet_alice",
+        "toUserAccount": "wallet_bob",
+        "mint": "SOME_OTHER_MINT",
+        "tokenAmount": "999"
+      }
+    ],
+    "instructions": []
+  },
+  {
+    "_desc": "Unknown source but Raydium program ID in instructions (fallback classification → SELL)",
+    "signature": "sig_raydium_fallback",
+    "slot": 6000,
+    "timestamp": 1700005000,
+    "source": "UNKNOWN",
+    "tokenTransfers": [
+      {
+        "fromUserAccount": "wallet_alice",
+        "toUserAccount": "raydium_pool",
+        "mint": "PEANUTS_MINT",
+        "tokenAmount": "3000"
+      }
+    ],
+    "instructions": [
+      { "programId": "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8" }
+    ]
+  },
+  {
+    "_desc": "Zero-amount transfer (should be filtered out)",
+    "signature": "sig_zero_amount",
+    "slot": 7000,
+    "timestamp": 1700006000,
+    "source": "UNKNOWN",
+    "tokenTransfers": [
+      {
+        "fromUserAccount": "wallet_alice",
+        "toUserAccount": "wallet_bob",
+        "mint": "PEANUTS_MINT",
+        "tokenAmount": "0"
+      }
+    ],
+    "instructions": []
+  }
+]

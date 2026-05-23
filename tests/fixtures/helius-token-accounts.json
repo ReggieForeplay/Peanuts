@@ -1,0 +1,58 @@
+{
+  "page1": {
+    "result": {
+      "total": 4,
+      "page": 1,
+      "items": [
+        {
+          "address": "ta_alice",
+          "owner": "wallet_alice",
+          "token_info": { "mint": "PEANUTS_MINT", "amount": "5000", "decimals": 6, "frozen": false }
+        },
+        {
+          "address": "ta_bob",
+          "owner": "wallet_bob",
+          "token_info": { "mint": "PEANUTS_MINT", "amount": "3000", "decimals": 6, "frozen": false }
+        },
+        {
+          "address": "ta_charlie",
+          "owner": "wallet_charlie",
+          "token_info": { "mint": "PEANUTS_MINT", "amount": "1000", "decimals": 6, "frozen": true }
+        }
+      ]
+    }
+  },
+  "page2": {
+    "result": {
+      "total": 4,
+      "page": 2,
+      "items": [
+        {
+          "address": "ta_dave",
+          "owner": "wallet_dave",
+          "token_info": { "mint": "PEANUTS_MINT", "amount": "250", "decimals": 6, "frozen": false }
+        }
+      ]
+    }
+  },
+  "page3": {
+    "result": {
+      "total": 4,
+      "page": 3,
+      "items": []
+    }
+  },
+  "zero_balance": {
+    "result": {
+      "total": 1,
+      "page": 1,
+      "items": [
+        {
+          "address": "ta_zero",
+          "owner": "wallet_zero",
+          "token_info": { "mint": "PEANUTS_MINT", "amount": "0", "decimals": 6, "frozen": false }
+        }
+      ]
+    }
+  }
+}

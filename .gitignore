@@ -1,0 +1,25 @@
+# Environment
+.env
+
+# Database files
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Logs
+logs/
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Dashboard build
+packages/dashboard/dist/
+packages/dashboard/node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
